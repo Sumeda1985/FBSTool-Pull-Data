@@ -234,3 +234,9 @@ saveRDS(food_classification, paste0(basedir,"/Data/foodCommodityList.rds"))
 ##trade data
 tradeMap<- data.table(read_excel("Data/tradeMap_2019.xlsx"))
 saveRDS(tradeMap,paste0(basedir,"/Data/tradeMap_2019.rds"))
+
+#create ratios. Please run the function
+
+sapply(list.files(pattern="[.]R$", path="R/", full.names=TRUE), source)
+
+creatingRatio <- creatingRatio()
