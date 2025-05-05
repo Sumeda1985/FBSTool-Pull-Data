@@ -66,7 +66,7 @@ saveRDS(data_tool_2000_2009, file = paste0(basedir,"/Data/countrySUA_2000_2009.r
 tree <- fread("Data/tree.csv")
 tree[, c("geographicAreaM49", "timePointYears") := lapply(.SD, as.character),
      .SDcols = c("geographicAreaM49", "timePointYears")]
-dbWriteTable(concore, name="tree", value=tree, overwrite = TRUE)
+dbWriteTable(con, name="tree", value=tree, overwrite = TRUE)
 
 if(file.exists(paste0(basedir,"/SUA-FBS Balancing/Data/tree.rds"))){
   file.remove(paste0(basedir,"/SUA-FBS Balancing/Data/tree.rds"))
@@ -81,6 +81,8 @@ dbWriteTable(concore, name="processed_item_datatable",
              value=processed_item_datatable,
              overwrite = TRUE)
 
+
+
 if(file.exists(paste0(basedir,"/SUA-FBS Balancing/Data/processed_item_datatable.rds"))){
   file.remove(paste0(basedir,"/SUA-FBS Balancing/Data/processed_item_datatable.rds"))
   saveRDS(processed_item_datatable,paste0(basedir,"/SUA-FBS Balancing/Data/processed_item_datatable.rds"))
@@ -92,6 +94,8 @@ if(file.exists(paste0(basedir,"/SUA-FBS Balancing/Data/processed_item_datatable.
 itemMap <- fread("Data/itemMap.csv")
 dbWriteTable(concore, name="item_map", value=itemMap,
              overwrite = TRUE)
+# itemMap <- dbReadTable(concore, name="item_map")
+
 
 if(file.exists(paste0(basedir,"/SUA-FBS Balancing/Data/itemMap.rds"))){
   file.remove(paste0(basedir,"/SUA-FBS Balancing/Data/itemMap.rds"))
@@ -127,7 +131,6 @@ if(file.exists(paste0(basedir,"/SUA-FBS Balancing/Data/popSWS.rds"))){
   file.remove(paste0(basedir,"/SUA-FBS Balancing/Data/popSWS.rds"))
   saveRDS(popSWS,paste0(basedir,"/SUA-FBS Balancing/Data/popSWS.rds"))
 }else{
-
   saveRDS(popSWS,paste0(basedir,"/SUA-FBS Balancing/Data/popSWS.rds"))
 }
 
@@ -302,7 +305,7 @@ saveRDS(foodDemand,paste0(basedir,"/Data/fdmData.rds"))
 ## Food classification
 
 food_classification <- fread("Data/foodCommodityList.csv")
-dbWriteTable(concore, name="food_classification", value=food_classification,
+dbWriteTable(con, name="food_classification", value=food_classification,
              overwrite = TRUE)
 saveRDS(food_classification, paste0(basedir,"/Data/foodCommodityList.rds"))
 
