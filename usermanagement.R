@@ -11,22 +11,16 @@ adminpath<-file.path("~/fao2025","FBSTool-Pull-Data")
 
 ## key <- sig_keygen()
 ## pubkey <- sig_pubkey(key)
-## saveRDS(key, file="secret.rds")
-## saveRDS(pubkey, file="publickey.rds")
+## saveRDS(key, file=file.path(adminpath, "secret.rds"))
+## saveRDS(pubkey, file=file.path(apppath, "publickey.rds"))
 
 ## These commands were used to create an empty authentication file.
 ## They can be used again to remove access to all existing users.
 
-userauth <- data.table(user=character(), country=character(),
-                       authkey=character(),
-                       status=numeric())
-newuser <- data.table(user="Vikas.Rawal@fao.org", country="Lesotho",
-                              authkey=enc2utf8(rawToChar(sig)), status=1)
-userauth <- rbind(userauth, newuser)
-saveRDS(userauth, file.path(apppath,"userauth.rds"))
-
-## key <- readRDS("secret.rds")
-pubkey <- readRDS(file.path(apppath,"publickey.rds"))
+## userauth <- data.table(user=character(), country=character(),
+##                        authkey=character(),
+##                        status=numeric())
+## saveRDS(userauth, file.path(apppath,"userauth.rds"))
 
 #' Add fbs user
 #'
@@ -95,29 +89,9 @@ enablefbsuser <- function(useremail, usercountry) {
     }
 }
 
-#3 addfbsuser("Vikas.Rawal@fao.org", "Lesotho")
+## addfbsuser("Vikas.Rawal@fao.org", "Lesotho")
 ## delfbsuser("Vikas.Rawal@fao.org", "Lesotho")
 ## disablefbsuser("Vikas.Rawal@fao.org", "Lesotho")
 ## enablefbsuser("Vikas.Rawal@fao.org", "Lesotho")
 
 ## addfbsuser("Vikas.Rawal@fao.org", "South Sudan")
-
-## The part below needs to be moved to the shiny app.
-userauth <- readRDS(file.path(apppath,"userauth.rds"))[status==1]
-pubkey <- readRDS(file.path(apppath,"publickey.rds"))
-for (i in userauth[user=="Vikas.Rawal@fao.org", authkey]) {
-    print(i)
-    if(tryCatch({sig_verify(charToRaw("0oRRq7$iBt16jev"), charToRaw(userauth$authkey[1]),
-                     pubkey)},
-                error=function(e){
-                    FALSE
-                }) == TRUE) {
-        selectcountry <- userauth[user=="Vikas.Rawal@fao.org" & authkey == i,
-                                  country]
-        print(selectcountry)
-    } else {
-        print("Does not match")
-    }
-}
-
-userauth <- readRDS(file.path(apppath,"userauth.rds"))[status==1]
