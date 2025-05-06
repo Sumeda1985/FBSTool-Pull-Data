@@ -46,8 +46,12 @@ data[,Flag := ifelse(is.nan(Value), NA, Flag)]
 data[,Value := ifelse(is.nan(Value), NA, Value)]
 data[,Flag := ifelse(Value == Inf, NA, Flag)]
 data[,Value := ifelse(Value == Inf, NA, Value)]
-data=wide_format(data)
-saveRDS(data, paste0(basedir,"/Data/lossRatio.rds"))
+#data=wide_format(data)
+data[, ElementCode := "R5016"]
+dbWriteTable(con, name="loss_ratios",
+             value=data,
+             overwrite = TRUE)
+
 
 #create feed ratios
 
@@ -107,8 +111,11 @@ data[,Value := ifelse(is.nan(Value), NA, Value)]
 
 data[,Flag := ifelse(Value == Inf, NA, Flag)]
 data[,Value := ifelse(Value == Inf, NA, Value)]
-data=wide_format(data)
-saveRDS(data, paste0(basedir,"/Data/feedRatio.rds"))
+data[,ElementCode := "R5520"]
+#data=wide_format(data)
+dbWriteTable(con, name="feed_ratios",
+             value=data,
+             overwrite = TRUE)
 
 #seed Rates 
 rm(list = ls())
@@ -179,8 +186,12 @@ seedRates[,Flag := ifelse(is.nan(Value), NA, Flag)]
 seedRates[,Value := ifelse(is.nan(Value), NA, Value)]
 seedRates[,Flag := ifelse(Value == Inf, NA, Flag)]
 seedRates[,Value := ifelse(Value == Inf, NA, Value)]
-seedRates= wide_format(seedRates)
-saveRDS(seedRates, paste0(basedir,"/Data/seedRate.rds"))
+#seedRates= wide_format(seedRates)
+seedRates[,ElementCode := "R5525"]
+
+dbWriteTable(con, name="seed_rates",
+             value=seedRates,
+             overwrite = TRUE)
 
 }
 
