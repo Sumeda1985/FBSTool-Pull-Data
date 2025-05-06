@@ -209,8 +209,17 @@ dbWriteTable(concore, name="food_demand", value=foodDemand,
 ## Food classification
 
 food_classification <- fread("Data/foodCommodityList.csv")
-dbWriteTable(con, name="food_classification", value=food_classification,
+dbWriteTable(concore, name="food_classification", value=food_classification,
              overwrite = TRUE)
+
+##gdp data
+
+gdpData <- data.table(read_excel("Data/gdpData.xlsx"))
+gdpData[,StatusFlag :=  1 ]
+gdpData[,LastModified := as.numeric(Sys.time())]
+dbWriteTable(con, name="gdpData", value=gdpData,
+             overwrite = TRUE)
+
 
 ##trade data
 tradeMap<- data.table(read_excel("Data/tradeMap_2019.xlsx"))
