@@ -26,7 +26,7 @@ userauth <- rbind(userauth, newuser)
 saveRDS(userauth, file.path(apppath,"userauth.rds"))
 
 ## key <- readRDS("secret.rds")
-pubkey <- readRDS(file.path(adminpath,"publickey.rds"))
+pubkey <- readRDS(file.path(apppath,"publickey.rds"))
 
 #' Add fbs user
 #'
@@ -101,7 +101,10 @@ enablefbsuser <- function(useremail, usercountry) {
 ## enablefbsuser("Vikas.Rawal@fao.org", "Lesotho")
 
 ## addfbsuser("Vikas.Rawal@fao.org", "South Sudan")
+
+## The part below needs to be moved to the shiny app.
 userauth <- readRDS(file.path(apppath,"userauth.rds"))[status==1]
+pubkey <- readRDS(file.path(apppath,"publickey.rds"))
 for (i in userauth[user=="Vikas.Rawal@fao.org", authkey]) {
     print(i)
     if(tryCatch({sig_verify(charToRaw("0oRRq7$iBt16jev"), charToRaw(userauth$authkey[1]),
