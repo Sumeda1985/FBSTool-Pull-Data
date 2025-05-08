@@ -959,10 +959,7 @@ elementCodesToNames <- function(data, elementCol = NULL, itemCol = NULL, standPa
          " creates a new column with that name.  For safety, an error is thrown.")
   }
   elementMap = GetCodeList("agriculture", "aproduction", "measuredItemCPC")
-  
-  
-  
-  # write.csv(elementMap,paste0(basedir,"/SUA-FBS Balancing/FBS_Balanced/Data/elementMap.csv"),row.names = FALSE)
+  write.csv(elementMap,"Data/elementMap.csv",row.names = FALSE)
   
   
   message("Get Code List ok")
@@ -981,8 +978,7 @@ elementCodesToNames <- function(data, elementCol = NULL, itemCol = NULL, standPa
             paste(failures, collapse = ", "))
   }
   itemCodeKey = ReadDatatable("element_codes")
-  
-  # write.csv(itemCodeKey,paste0(basedir,"/SUA-FBS Balancing/FBS_Balanced/Data/itemCodeKey.csv"),row.names = FALSE)
+  write.csv(itemCodeKey,"Data/itemCodeKey.csv",row.names = FALSE)
   
   itemCodeKey[, `:=`(c("description", "factor"), NULL)]
   itemCodeKey = itemCodeKey[order(itemtype, production), ]

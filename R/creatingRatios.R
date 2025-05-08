@@ -5,7 +5,6 @@ library()
   
 rm(list = ls())
 #FBS Tool directory 
-basedir <- "E:/FBSTool_Test"
 sapply(list.files(pattern="[.]R$", path="R/", full.names=TRUE), source)
 countryData <- get(load("Data/countrySUA.RData"))
 countryData[, Value := as.numeric(Value)]  
@@ -48,6 +47,10 @@ data[,Flag := ifelse(Value == Inf, NA, Flag)]
 data[,Value := ifelse(Value == Inf, NA, Value)]
 #data=wide_format(data)
 data[, ElementCode := "R5016"]
+data[,StatusFlag :=  1 ]
+data[,LastModified := as.numeric(Sys.time())]
+data[, CountryM49 := unique(countryData$CountryM49) ]
+data[, Country := unique(countryData$Country) ]
 dbWriteTable(con, name="loss_ratios",
              value=data,
              overwrite = TRUE)
@@ -57,7 +60,6 @@ dbWriteTable(con, name="loss_ratios",
 
 rm(list = ls())
 #FBS Tool directory 
-basedir <- "E:/FBSTool_Test"
 sapply(list.files(pattern="[.]R$", path="R/", full.names=TRUE), source)
 countryData <- get(load("Data/countrySUA.RData"))
 countryData[, Value := as.numeric(Value)]  
@@ -112,14 +114,16 @@ data[,Value := ifelse(is.nan(Value), NA, Value)]
 data[,Flag := ifelse(Value == Inf, NA, Flag)]
 data[,Value := ifelse(Value == Inf, NA, Value)]
 data[,ElementCode := "R5520"]
-#data=wide_format(data)
+data[,StatusFlag :=  1 ]
+data[,LastModified := as.numeric(Sys.time())]
+data[, CountryM49 := unique(countryData$CountryM49) ]
+data[, Country := unique(countryData$Country) ]
 dbWriteTable(con, name="feed_ratios",
              value=data,
              overwrite = TRUE)
 
 #seed Rates 
 rm(list = ls())
-basedir <- "E:/FBSTool_Test"
 sapply(list.files(pattern="[.]R$", path="R/", full.names=TRUE), source)
 countryData <- get(load("Data/countrySUA.RData"))
 countryData[, Value := as.numeric(Value)]  
@@ -188,7 +192,11 @@ seedRates[,Flag := ifelse(Value == Inf, NA, Flag)]
 seedRates[,Value := ifelse(Value == Inf, NA, Value)]
 #seedRates= wide_format(seedRates)
 seedRates[,ElementCode := "R5525"]
-
+seedRates[,StatusFlag :=  1 ]
+seedRates[,LastModified := as.numeric(Sys.time())]
+seedRates[, CountryM49 := unique(countryData$CountryM49) ]
+seedRates[, Country := unique(countryData$Country) ]
+seedRates[,Year := as.character(Year)]
 dbWriteTable(con, name="seed_rates",
              value=seedRates,
              overwrite = TRUE)

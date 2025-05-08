@@ -156,50 +156,11 @@ dbWriteTable(concore, name="fbs_balanced_wipe", value=fbs_balancedData,
 
 
 ##
-
-#sua_bal_2010_2013 <- fread("Data/sua_bal_2010_2013.csv")
-#dbWriteTable(con, name="sua_bal_2010_2013", value=sua_bal_2010_2013,
-             #overwrite = TRUE)
-
-
-
-
-##
-#SuabalData <- fread("Data/SuabalData.csv")
-
-#if(file.exists(paste0(basedir,"/SUA-FBS Balancing/FBS_Balanced/Data/SuabalData.rds"))){
-  #file.remove(paste0(basedir,"/SUA-FBS Balancing/FBS_Balanced/Data/SuabalData.rds"))
-  #saveRDS(SuabalData,paste0(basedir,"/SUA-FBS Balancing/FBS_Balanced/Data/SuabalData.rds"))
-#}else{
-
-  #saveRDS(SuabalData,paste0(basedir,"/SUA-FBS Balancing/FBS_Balanced/Data/SuabalData.rds"))
-#}
-
-##
 parentNodes = fread("Data/parentNodes.csv")
 dbWriteTable(concore, name="parent_nodes", value=parentNodes,
              overwrite = TRUE)
 
-##
-#fbs_standardized <- fread("Data/fbs_standardized_final.csv")
-#fbs_standardized[, c("geographicAreaM49", "measuredElementSuaFbs","timePointYears") := lapply(.SD, as.character),
-                 #.SDcols = c("geographicAreaM49","measuredElementSuaFbs", "timePointYears" )]
-#saveRDS(fbs_standardized,paste0(basedir,"/SUA-FBS Balancing/FBS_Balanced/Data/fbs_standardized_final.rds"))
-##
-#fbs_balanced_bis <- fread("Data/fbs_balanced_final.csv")
-#fbs_balanced_bis[, c("geographicAreaM49", "measuredElementSuaFbs","timePointYears") := lapply(.SD, as.character),
-                # .SDcols = c("geographicAreaM49","measuredElementSuaFbs", "timePointYears" )]
 
-#saveRDS(fbs_balanced_bis,paste0(basedir,"/SUA-FBS Balancing/FBS_Balanced/Data/fbs_balanced_final.rds"))
-
-##
-#fbs_balancedData_2010_2013 <- fread("Data/fbs_balanced_2010_2013.csv")
-#fbs_balancedData_2010_2013[, c("geographicAreaM49", "measuredElementSuaFbs","timePointYears") := lapply(.SD, as.character),
-                 #.SDcols = c("geographicAreaM49","measuredElementSuaFbs", "timePointYears" )]
-
-#saveRDS(fbs_balancedData_2010_2013,paste0(basedir,"/SUA-FBS Balancing/FBS_Balanced/Data/fbs_balanced_2010_2013.rds"))
-
-#paste0(basedir,"/Data/fdmData.rds")
 
 ##food domain
 foodDemand <- fread("Data/fdmData.csv")
@@ -209,14 +170,20 @@ dbWriteTable(concore, name="food_demand", value=foodDemand,
 ## Food classification
 
 food_classification <- fread("Data/foodCommodityList.csv")
-dbWriteTable(concore, name="food_classification", value=food_classification,
+food_classification[,StatusFlag :=  1 ]
+food_classification[,LastModified := as.numeric(Sys.time())]
+dbWriteTable(con, name="food_classification", value=food_classification,
              overwrite = TRUE)
 
 ##gdp data
 
 gdpData <- data.table(read_excel("Data/gdpData.xlsx"))
-gdpData[,StatusFlag :=  1 ]
-gdpData[,LastModified := as.numeric(Sys.time())]
+gdpData[, `:=`(
+  StatusFlag = 1,
+  LastModified = as.numeric(Sys.time()),
+  CountryM49 = as.character(unique(database$CountryM49)),
+  Country = as.character(unique(database$Country))
+)]
 dbWriteTable(con, name="gdpData", value=gdpData,
              overwrite = TRUE)
 
@@ -232,3 +199,41 @@ dbWriteTable(concore, name="trade_map", value=tradeMap,
 sapply(list.files(pattern="[.]R$", path="R/", full.names=TRUE), source)
 
 creatingRatio <- creatingRatio()
+
+
+#fish 
+
+fish <- data.table(read_excel("Data/fish.xlsx"))
+fish[,StatusFlag :=  1 ]
+fish[,LastModified := as.numeric(Sys.time())]
+dbWriteTable(con, name="fish", value=fish,
+             overwrite = TRUE)
+
+#tourist
+
+TourismNoIndustrial <- fread_rds("Data/TourismNoIndustrial.rds")
+dbWriteTable(concore, name="TourismNoIndustrial", value=TourismNoIndustrial,
+             overwrite = TRUE)
+
+#flag
+
+flagValidTable <- fread_rds("Data/flagValidTable.rds")
+dbWriteTable(concore, name="flagValidTable", value=flagValidTable,
+             overwrite = TRUE)
+
+#sua commo
+
+SUA_Commodities <- fread_rds("Data/SUA_Commodities.rds") 
+dbWriteTable(concore, name="SUA_Commodities", value=SUA_Commodities,
+             overwrite = TRUE)
+
+#elementMap
+
+elementMap <- data.table(readRDS("Data/elementMap.rds"))
+dbWriteTable(concore, name="elementMap", value=elementMap,
+             overwrite = TRUE)
+#itemCodekey
+
+itemCodeKey <- data.table(readRDS("Data/itemCodeKey.csv"))
+dbWriteTable(concore, name="itemCodeKey", value=itemCodeKey,
+             overwrite = TRUE)
