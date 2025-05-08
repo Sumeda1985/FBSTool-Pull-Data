@@ -234,6 +234,11 @@ dbWriteTable(concore, name="elementMap", value=elementMap,
              overwrite = TRUE)
 #itemCodekey
 
-itemCodeKey <- data.table(readRDS("Data/itemCodeKey.csv"))
+itemCodeKey <- data.table(readRDS("Data/itemCodeKey.rds"))
 dbWriteTable(concore, name="itemCodeKey", value=itemCodeKey,
+             overwrite = TRUE)
+
+#elemets for the outputs
+elements <- data.table(readRDS("Data/elements.rds"))
+dbWriteTable(concore, name="elements", value=elements,
              overwrite = TRUE)
