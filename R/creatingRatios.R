@@ -65,16 +65,12 @@ creatingRatio <- function() {
     data[, Value := ifelse(Value == Inf, NA, Value)]
     # data = wide_format(data)
     data[, ElementCode := "R5016"]
-    data[, StatusFlag := 1]
-    data[, LastModified := as.numeric(Sys.time())]
     data[, CountryM49 := unique(countryData$CountryM49)]
-    data[, Country := unique(countryData$Country)]
-    data[, id_key := c(1:nrow(data))]
-    dbWriteTable(
+    data[, c("Commodity", "Element") := NULL]
+    ##data[, id_key := c(1:nrow(data))]
+    dbAppendTable(
         con, name = "loss_ratios",
-        value = data,
-        field.types = c("id_key" = "BIGSERIAL PRIMARY KEY"),
-        overwrite = TRUE
+        value = data
     )
 
     # create feed ratios
@@ -150,17 +146,10 @@ creatingRatio <- function() {
     data[, Flag := ifelse(Value == Inf, NA, Flag)]
     data[, Value := ifelse(Value == Inf, NA, Value)]
     data[, ElementCode := "R5520"]
-    data[, StatusFlag := 1]
-    data[, LastModified := as.numeric(Sys.time())]
     data[, CountryM49 := unique(countryData$CountryM49)]
-    data[, Country := unique(countryData$Country)]
-    data[, id_key := c(1:nrow(data))]
-    dbWriteTable(
-        con, name = "feed_ratios",
-        value = data,
-        field.types = c("id_key" = "BIGSERIAL PRIMARY KEY"),
-        overwrite = TRUE
-    )
+    data[, c("Commodity", "Element") := NULL]
+    dbAppendTable(con, name = "feed_ratios",
+                  value = data)
 
     # seed Rates
     sapply(list.files(pattern = "[.]R$", path = "R/",
@@ -252,16 +241,9 @@ creatingRatio <- function() {
     seedRates[, Value := ifelse(Value == Inf, NA, Value)]
     # seedRates = wide_format(seedRates)
     seedRates[, ElementCode := "R5525"]
-    seedRates[, StatusFlag := 1]
-    seedRates[, LastModified := as.numeric(Sys.time())]
     seedRates[, CountryM49 := unique(countryData$CountryM49)]
-    seedRates[, Country := unique(countryData$Country)]
     seedRates[, Year := as.character(Year)]
-    seedRates[, id_key := c(1:nrow(seedRates))]
-    dbWriteTable(
-        con, name = "seed_rates",
-        value = seedRates,
-        field.types = c("id_key" = "BIGSERIAL PRIMARY KEY"),
-        overwrite = TRUE
-    )
+    seedRates[, c("Commodity", "Element") := NULL]
+    dbAppendTable(con, name = "seed_rates",
+                  value = seedRates)
 }
