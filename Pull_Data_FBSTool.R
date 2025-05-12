@@ -208,6 +208,11 @@ dbAppendTable(concore, name="output_elements", value=output_elements)
 cpc2.1 <- data.table(readRDS("Data/cpc2.1.rds"))
 dbAppendTable(concore, name="cpc2.1", value=cpc2.1)
 
+#appending two commodities in english to cpc2.1. Juice of fruits and other cereals 
+
+cpcAppend <- cpc2.1[language == "en" & CPCCode %in% c("21439.9","01199")]
+dbAppendTable(concore, name="cpc2.1", value=cpcAppend)
+
 ## List of all elements
 elements_all <- data.table(readRDS("Data/elements_all.rds"))
 dbAppendTable(concore, name="elements_all", value=elements_all)
