@@ -790,3 +790,29 @@ BEFORE INSERT OR UPDATE OR DELETE ON core.food_function
 FOR EACH ROW EXECUTE PROCEDURE versioning(
   'sys_period', 'core.food_function_history', true
 );
+
+-- Create production_list_cpc table in core schema
+CREATE TABLE core.production_list_cpc (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "CPCCode" character(20),
+       "Commodity" character(500),
+       "Input Code" character(20),
+       "Input" character(500),
+       "Productivity Code" character(20),
+       "Productivity" character(500),
+       "Output Code" character(20),
+       "Output" character(500),
+       "classification" character(100)
+);
+
+ALTER TABLE core.production_list_cpc
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core.production_list_cpc_history (LIKE core.production_list_cpc);
+
+CREATE TRIGGER versioning_trigger_production_list_cpc
+BEFORE INSERT OR UPDATE OR DELETE ON core.production_list_cpc
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core.production_list_cpc_history', true
+);
+
