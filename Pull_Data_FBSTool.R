@@ -196,13 +196,44 @@ elementMap[, c("startDate", "endDate") := NULL]
 dbAppendTable(concore, name="elementmap", value=elementMap)
 
 ##itemCodekey
-
-## Needs to be fixed
 itemCodeKey <- data.table(readRDS("Data/itemCodeKey.rds"))
 itemCodeKey[, c("description", "factor") := NULL]
 dbAppendTable(concore, name="itemcodekey", value=itemCodeKey)
 
-#elemets for the outputs
-elements <- data.table(readRDS("Data/elements.rds"))
-elements[, language := "en"]
-dbAppendTable(concore, name="elements", value=elements)
+# elements for the outputs
+output_elements <- data.table(readRDS("Data/output_elements.rds"))
+dbAppendTable(concore, name="output_elements", value=output_elements)
+
+## List of all items
+cpc2.1 <- data.table(readRDS("Data/cpc2.1.rds"))
+dbAppendTable(concore, name="cpc2.1", value=cpc2.1)
+
+## List of all elements
+elements_all <- data.table(readRDS("Data/elements_all.rds"))
+dbAppendTable(concore, name="elements_all", value=elements_all)
+
+
+## List of countries
+country <- data.table(readRDS("Data/country.rds"))
+dbAppendTable(concore, name="country", value=country)
+
+
+## List of flags
+flags <- data.table(readRDS("Data/flags.rds"))
+dbAppendTable(concore, name="flags", value=flags)
+
+## FBS commodities
+fbs_commodities <- data.table(readRDS("Data/fbs_commodities.rds"))
+dbAppendTable(concore, name="fbs_commodities", value=fbs_commodities)
+
+## Nutrients
+nutrient_elements <- data.table(readRDS("Data/nutrient_elements.rds"))
+dbAppendTable(concore, name="nutrient_elements", value=nutrient_elements)
+
+## List of trade_commodities
+trade_commodities <- data.table(readRDS("Data/trade_commodities.rds"))
+dbAppendTable(concore, name="trade_commodities", value=trade_commodities)
+
+## List of food_function
+food_function <- data.table(readRDS("Data/food_function.rds"))
+dbAppendTable(concore, name="food_function", value=food_function)

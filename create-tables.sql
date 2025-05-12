@@ -1,4 +1,3 @@
--- Create schema
 CREATE SCHEMA IF NOT EXISTS core;
 
 -- Create user
@@ -614,8 +613,8 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
   'sys_period', 'core.itemCodeKey_history', true
 );
 
--- Create elements table in core schema
-CREATE TABLE core.elements (
+-- Create output_elements table in core schema
+CREATE TABLE core.output_elements (
        "id_key" BIGSERIAL PRIMARY KEY,
        "language" character(20),
        "ElementCode" character(20),
@@ -625,14 +624,169 @@ CREATE TABLE core.elements (
        "include_fbs" boolean
 );
 
-ALTER TABLE core.elements
+ALTER TABLE core.output_elements
   ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
 
-CREATE TABLE core.elements_history (LIKE core.elements);
+CREATE TABLE core.output_elements_history (LIKE core.output_elements);
 
-CREATE TRIGGER versioning_trigger_elements
-BEFORE INSERT OR UPDATE OR DELETE ON core.elements
+CREATE TRIGGER versioning_trigger_output_elements
+BEFORE INSERT OR UPDATE OR DELETE ON core.output_elements
 FOR EACH ROW EXECUTE PROCEDURE versioning(
-  'sys_period', 'core.elements_history', true
+  'sys_period', 'core.output_elements_history', true
 );
 
+-- Create cpc2.1 table in core schema
+CREATE TABLE core."cpc2.1" (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "CPCCode" character(20),
+       "Commodity" character(500),
+       "language" character(20)
+);
+
+ALTER TABLE core."cpc2.1"
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core."cpc2.1_history" (LIKE core."cpc2.1");
+
+CREATE TRIGGER versioning_trigger_cpc2_1
+BEFORE INSERT OR UPDATE OR DELETE ON core."cpc2.1"
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core."cpc2.1_history"', true
+);
+
+-- Create elements_all table in core schema
+CREATE TABLE core."elements_all" (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "ElementCode" character(20),
+       "Element" character(500),
+       "language" character(20)
+);
+
+ALTER TABLE core."elements_all"
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core."elements_all_history" (LIKE core."elements_all");
+
+CREATE TRIGGER versioning_trigger_elements_all
+BEFORE INSERT OR UPDATE OR DELETE ON core."elements_all"
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core."elements_all_history"', true
+);
+
+-- Create country table in core schema
+CREATE TABLE core."country" (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "CountryM49" character(20),
+       "Country" character(500),
+       "language" character(20)
+);
+
+ALTER TABLE core."country"
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core."country_history" (LIKE core."country");
+
+CREATE TRIGGER versioning_trigger_elements_all
+BEFORE INSERT OR UPDATE OR DELETE ON core."country"
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core."country_history"', true
+);
+
+-- Create flags table in core schema
+CREATE TABLE core.flags (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "Flag" character(20),
+       "Source" character(500),
+       "language" character(20)
+);
+
+ALTER TABLE core.flags
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core.flags_history (LIKE core.flags);
+
+CREATE TRIGGER versioning_trigger_flags
+BEFORE INSERT OR UPDATE OR DELETE ON core.flags
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core.flags_history', true
+);
+
+-- Create fbs_commodities table in core schema
+CREATE TABLE core.fbs_commodities (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "FBSCode" character(20),
+       "Commodity" character(500),
+       "language" character(20)
+);
+
+ALTER TABLE core.fbs_commodities
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core.fbs_commodities_history (LIKE core.fbs_commodities);
+
+CREATE TRIGGER versioning_trigger_fbs_commodities
+BEFORE INSERT OR UPDATE OR DELETE ON core.fbs_commodities
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core.fbs_commodities_history', true
+);
+
+-- Create nutrient_elements table in core schema
+CREATE TABLE core.nutrient_elements (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "language" character(20),
+       "ElementCode" character(20),
+       "Element" character(500),
+       "Unit" character(100),
+       "measuredElement_code" character(20),
+       "measuredElement" character(500)
+);
+
+ALTER TABLE core.nutrient_elements
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core.nutrient_elements_history (LIKE core.nutrient_elements);
+
+CREATE TRIGGER versioning_trigger_nutrient_elements
+BEFORE INSERT OR UPDATE OR DELETE ON core.nutrient_elements
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core.nutrient_elements_history', true
+);
+
+-- Create trade_commodities table in core schema
+CREATE TABLE core.trade_commodities (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "HS6" character(500),
+       "CPCCode" character(20),
+       "Commodity" character(500),
+       "language" character(20)
+);
+
+ALTER TABLE core.trade_commodities
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core.trade_commodities_history (LIKE core.trade_commodities);
+
+CREATE TRIGGER versioning_trigger_trade_commodities
+BEFORE INSERT OR UPDATE OR DELETE ON core.trade_commodities
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core.trade_commodities_history', true
+);
+
+-- Create food_function table in core schema
+CREATE TABLE core.food_function (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "food_function" character(20),
+       "description" character(100),
+       "language" character(20)
+);
+
+ALTER TABLE core.food_function
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core.food_function_history (LIKE core.food_function);
+
+CREATE TRIGGER versioning_trigger_food_function
+BEFORE INSERT OR UPDATE OR DELETE ON core.food_function
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core.food_function_history', true
+);
