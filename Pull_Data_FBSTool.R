@@ -7,7 +7,7 @@ library(ssh)
 fread_rds <- function(path) data.table::data.table(readRDS(path))
 
 #FBS Tool directory
-basedir <- "E:/FBSTool_Test"
+#basedir <- "E:/FBSTool_Test"
 
 #SUA Balanced Data
 # Database connection
@@ -210,7 +210,8 @@ dbAppendTable(concore, name="cpc2.1", value=cpc2.1)
 
 ## List of all elements
 elements_all <- data.table(readRDS("Data/elements_all.rds"))
-dbAppendTable(concore, name="elements_all", value=elements_all)
+#dbExecute(concore, "TRUNCATE TABLE elements_all")
+dbWriteTable(concore, name="elements_all", value=elements_all, append=T)
 
 ## List of countries
 country <- data.table(readRDS("Data/country.rds"))
