@@ -7,7 +7,7 @@ library(ssh)
 fread_rds <- function(path) data.table::data.table(readRDS(path))
 
 #FBS Tool directory
-basedir <- "E:/FBSTool_Test"
+#basedir <- "E:/FBSTool_Test"
 
 #SUA Balanced Data
 # Database connection
@@ -208,20 +208,14 @@ dbAppendTable(concore, name="output_elements", value=output_elements)
 cpc2.1 <- data.table(readRDS("Data/cpc2.1.rds"))
 dbAppendTable(concore, name="cpc2.1", value=cpc2.1)
 
-#appending two commodities in english to cpc2.1. Juice of fruits and other cereals 
-
-cpcAppend <- cpc2.1[language == "en" & CPCCode %in% c("21439.9","01199")]
-dbAppendTable(concore, name="cpc2.1", value=cpcAppend)
-
 ## List of all elements
 elements_all <- data.table(readRDS("Data/elements_all.rds"))
-dbAppendTable(concore, name="elements_all", value=elements_all)
-
+#dbExecute(concore, "TRUNCATE TABLE elements_all")
+dbWriteTable(concore, name="elements_all", value=elements_all, append=T)
 
 ## List of countries
 country <- data.table(readRDS("Data/country.rds"))
 dbAppendTable(concore, name="country", value=country)
-
 
 ## List of flags
 flags <- data.table(readRDS("Data/flags.rds"))
@@ -242,3 +236,8 @@ dbAppendTable(concore, name="trade_commodities", value=trade_commodities)
 ## List of food_function
 food_function <- data.table(readRDS("Data/food_function.rds"))
 dbAppendTable(concore, name="food_function", value=food_function)
+
+
+## List of food_function
+production_list_cpc <- data.table(readRDS("Data/production_list_cpc.rds"))
+dbAppendTable(concore, name="production_list_cpc", value=production_list_cpc)

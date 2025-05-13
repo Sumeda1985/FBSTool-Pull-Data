@@ -1,3 +1,81 @@
+-- Drop all relevant history tables if they exist (in dependency-safe order)
+DROP TABLE IF EXISTS core.production_list_cpc_history CASCADE;
+DROP TABLE IF EXISTS core.food_function_history CASCADE;
+DROP TABLE IF EXISTS core.trade_commodities_history CASCADE;
+DROP TABLE IF EXISTS core.nutrient_elements_history CASCADE;
+DROP TABLE IF EXISTS core.fbs_commodities_history CASCADE;
+DROP TABLE IF EXISTS core.flags_history CASCADE;
+DROP TABLE IF EXISTS core."country_history" CASCADE;
+DROP TABLE IF EXISTS core."elements_all_history" CASCADE;
+DROP TABLE IF EXISTS core."cpc2.1_history" CASCADE;
+DROP TABLE IF EXISTS core.output_elements_history CASCADE;
+DROP TABLE IF EXISTS core.itemCodeKey_history CASCADE;
+DROP TABLE IF EXISTS core.elementMap_history CASCADE;
+DROP TABLE IF EXISTS core.SUA_Commodities_history CASCADE;
+DROP TABLE IF EXISTS core.flagValidTable_history CASCADE;
+DROP TABLE IF EXISTS core.trade_map_history CASCADE;
+DROP TABLE IF EXISTS core.gdp_data_history CASCADE;
+DROP TABLE IF EXISTS public.food_classification_history CASCADE;
+DROP TABLE IF EXISTS core.food_demand_history CASCADE;
+DROP TABLE IF EXISTS core.parent_nodes_history CASCADE;
+DROP TABLE IF EXISTS core.fbs_balanced_wipe_history CASCADE;
+DROP TABLE IF EXISTS core.fbs_standardized_wipe_history CASCADE;
+DROP TABLE IF EXISTS core.share_up_down_tree_history CASCADE;
+DROP TABLE IF EXISTS core.fbs_tree_history CASCADE;
+DROP TABLE IF EXISTS core.zero_weight_history CASCADE;
+DROP TABLE IF EXISTS core.utilization_table_history CASCADE;
+DROP TABLE IF EXISTS core.zeroweight_coproducts_history CASCADE;
+DROP TABLE IF EXISTS core.item_map_history CASCADE;
+DROP TABLE IF EXISTS core.processed_item_datatable_history CASCADE;
+DROP TABLE IF EXISTS core.data_tool_2000_2009_history CASCADE;
+DROP TABLE IF EXISTS public.seed_rates_history CASCADE;
+DROP TABLE IF EXISTS public.feed_ratios_history CASCADE;
+DROP TABLE IF EXISTS public.loss_ratios_history CASCADE;
+DROP TABLE IF EXISTS public.fish_history CASCADE;
+DROP TABLE IF EXISTS public.nutrient_data_history CASCADE;
+DROP TABLE IF EXISTS public.pop_sws_history CASCADE;
+DROP TABLE IF EXISTS public.tree_history CASCADE;
+DROP TABLE IF EXISTS public.dbcountry_history CASCADE;
+
+-- Drop all relevant tables if they exist (in dependency-safe order)
+DROP TABLE IF EXISTS core.production_list_cpc CASCADE;
+DROP TABLE IF EXISTS core.food_function CASCADE;
+DROP TABLE IF EXISTS core.trade_commodities CASCADE;
+DROP TABLE IF EXISTS core.nutrient_elements CASCADE;
+DROP TABLE IF EXISTS core.fbs_commodities CASCADE;
+DROP TABLE IF EXISTS core.flags CASCADE;
+DROP TABLE IF EXISTS core."country" CASCADE;
+DROP TABLE IF EXISTS core."elements_all" CASCADE;
+DROP TABLE IF EXISTS core."cpc2.1" CASCADE;
+DROP TABLE IF EXISTS core.output_elements CASCADE;
+DROP TABLE IF EXISTS core.itemCodeKey CASCADE;
+DROP TABLE IF EXISTS core.elementMap CASCADE;
+DROP TABLE IF EXISTS core.SUA_Commodities CASCADE;
+DROP TABLE IF EXISTS core.flagValidTable CASCADE;
+DROP TABLE IF EXISTS core.trade_map CASCADE;
+DROP TABLE IF EXISTS core.gdp_data CASCADE;
+DROP TABLE IF EXISTS public.food_classification CASCADE;
+DROP TABLE IF EXISTS core.food_demand CASCADE;
+DROP TABLE IF EXISTS core.parent_nodes CASCADE;
+DROP TABLE IF EXISTS core.fbs_balanced_wipe CASCADE;
+DROP TABLE IF EXISTS core.fbs_standardized_wipe CASCADE;
+DROP TABLE IF EXISTS core.share_up_down_tree CASCADE;
+DROP TABLE IF EXISTS core.fbs_tree CASCADE;
+DROP TABLE IF EXISTS core.zero_weight CASCADE;
+DROP TABLE IF EXISTS core.utilization_table CASCADE;
+DROP TABLE IF EXISTS core.zeroweight_coproducts CASCADE;
+DROP TABLE IF EXISTS core.item_map CASCADE;
+DROP TABLE IF EXISTS core.processed_item_datatable CASCADE;
+DROP TABLE IF EXISTS core.data_tool_2000_2009 CASCADE;
+DROP TABLE IF EXISTS public.seed_rates CASCADE;
+DROP TABLE IF EXISTS public.feed_ratios CASCADE;
+DROP TABLE IF EXISTS public.loss_ratios CASCADE;
+DROP TABLE IF EXISTS public.fish CASCADE;
+DROP TABLE IF EXISTS public.nutrient_data CASCADE;
+DROP TABLE IF EXISTS public.pop_sws CASCADE;
+DROP TABLE IF EXISTS public.tree CASCADE;
+DROP TABLE IF EXISTS public.dbcountry CASCADE;
+
 CREATE SCHEMA IF NOT EXISTS core;
 
 -- Create user
@@ -20,12 +98,12 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA core GRANT ALL PRIVILEGES ON SEQUENCES TO sua
 
 CREATE TABLE dbcountry (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CountryM49" character(20),
-       "CPCCode" character(20),
-       "ElementCode" character(20),
-       "Year" character(20),
+       "CountryM49" varchar(20),
+       "CPCCode" varchar(20),
+       "ElementCode" varchar(20),
+       "Year" varchar(20),
        "Value" numeric(21,6),
-       "Flag" character(20)
+       "Flag" varchar(20)
 );
 
 ALTER TABLE dbcountry
@@ -42,12 +120,12 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create new table in core schema
 CREATE TABLE core.data_tool_2000_2009 (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CountryM49" character(20),
-       "CPCCode" character(20),
-       "ElementCode" character(20),
-       "Year" character(20),
+       "CountryM49" varchar(20),
+       "CPCCode" varchar(20),
+       "ElementCode" varchar(20),
+       "Year" varchar(20),
        "Value" numeric(21,6),
-       "Flag" character(20)
+       "Flag" varchar(20)
 );
 
 ALTER TABLE core.data_tool_2000_2009
@@ -64,14 +142,14 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create tree table
 CREATE TABLE tree (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "geographicAreaM49" character(20),
-       "measuredElementSuaFbs" character(20),
-       "measuredItemParentCPC" character(20),
-       "measuredItemChildCPC" character(20),
-       "timePointYears" character(20),
+       "geographicAreaM49" varchar(20),
+       "measuredElementSuaFbs" varchar(20),
+       "measuredItemParentCPC" varchar(20),
+       "measuredItemChildCPC" varchar(20),
+       "timePointYears" varchar(20),
        "Value" numeric(21,6),
-       "flagObservationStatus" character(20),
-       "flagMethod" character(20)
+       "flagObservationStatus" varchar(20),
+       "flagMethod" varchar(20)
 );
 
 ALTER TABLE tree
@@ -88,8 +166,8 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create processed_item_datatable in core schema
 CREATE TABLE core.processed_item_datatable (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "measured_item_cpc" character(20),
-       "faostat" character(20),
+       "measured_item_cpc" varchar(20),
+       "faostat" varchar(20),
 );
 
 ALTER TABLE core.processed_item_datatable
@@ -106,11 +184,11 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create item_map table in core schema
 CREATE TABLE core.item_map (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "language" character(20),
-       "code" character(20),
-       "description" character(500),
+       "language" varchar(20),
+       "code" varchar(20),
+       "description" varchar(500),
        "selectionOnly" boolean,
-       "type" character(20)
+       "type" varchar(20)
 );
 
 ALTER TABLE core.item_map
@@ -127,8 +205,8 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create zeroweight_coproducts table in core schema
 CREATE TABLE core.zeroweight_coproducts (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "measured_item_child_cpc" character(20),
-       "branch" character(20)
+       "measured_item_child_cpc" varchar(20),
+       "branch" varchar(20)
 );
 
 ALTER TABLE core.zeroweight_coproducts
@@ -145,12 +223,12 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create pop_sws table
 CREATE TABLE pop_sws (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "geographicAreaM49" character(20),
-       "measuredElement" character(20),
-       "timePointYears" character(20),
+       "geographicAreaM49" varchar(20),
+       "measuredElement" varchar(20),
+       "timePointYears" varchar(20),
        "Value" numeric(21,6),
-       "flagObservationStatus" character(20),
-       "flagMethod" character(20)
+       "flagObservationStatus" varchar(20),
+       "flagMethod" varchar(20)
 );
 
 ALTER TABLE pop_sws
@@ -167,16 +245,16 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create utilization_table in core schema
 CREATE TABLE core.utilization_table (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "fcl_code" character(20),
-       "cpc_code" character(20),
-       "primary_item" character(20),
-       "proxy_primary" character(20),
-       "derived" character(20),
-       "food_item" character(20),
-       "stock" character(20),
-       "orphan" character(20),
-       "feed" character(20),
-       "feed_desc" character(20)
+       "fcl_code" varchar(20),
+       "cpc_code" varchar(20),
+       "primary_item" varchar(20),
+       "proxy_primary" varchar(20),
+       "derived" varchar(20),
+       "food_item" varchar(20),
+       "stock" varchar(20),
+       "orphan" varchar(20),
+       "feed" varchar(20),
+       "feed_desc" varchar(20)
 );
 
 ALTER TABLE core.utilization_table
@@ -193,7 +271,7 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create zero_weight table in core schema
 CREATE TABLE core.zero_weight (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "x" character(20)
+       "x" varchar(20)
 );
 
 ALTER TABLE core.zero_weight
@@ -210,10 +288,10 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create nutrient_data table
 CREATE TABLE nutrient_data (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "geographicAreaM49" character(20),
-       "measuredElement" character(20),
-       "measuredItemCPC" character(20),
-       "timePointYearsSP" character(20),
+       "geographicAreaM49" varchar(20),
+       "measuredElement" varchar(20),
+       "measuredItemCPC" varchar(20),
+       "timePointYearsSP" varchar(20),
        "Value" numeric(21,6)
 );
 
@@ -229,34 +307,34 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 );
 
 -- Create fbs_tree table
-CREATE TABLE fbs_tree (
+CREATE TABLE core.fbs_tree (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "id1" character(20),
-       "id2" character(20),
-       "id3" character(20),
-       "id4" character(20),
-       "item_sua_fbs" character(20)
+       "id1" varchar(20),
+       "id2" varchar(20),
+       "id3" varchar(20),
+       "id4" varchar(20),
+       "item_sua_fbs" varchar(20)
 );
 
-ALTER TABLE fbs_tree
+ALTER TABLE core.fbs_tree
   ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
 
-CREATE TABLE fbs_tree_history (LIKE fbs_tree);
+CREATE TABLE core.fbs_tree_history (LIKE core.fbs_tree);
 
 CREATE TRIGGER versioning_trigger_fbs_tree
-BEFORE INSERT OR UPDATE OR DELETE ON fbs_tree
+BEFORE INSERT OR UPDATE OR DELETE ON core.fbs_tree
 FOR EACH ROW EXECUTE PROCEDURE versioning(
-  'sys_period', 'fbs_tree_history', true
+  'sys_period', 'core.fbs_tree_history', true
 );
 
 -- Create share_up_down_tree table in core schema
 CREATE TABLE core.share_up_down_tree (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "geographicAreaM49" character(20),
-       "measuredElementSuaFbs" character(20),
-       "measuredItemParentCPC" character(20),
-       "measuredItemChildCPC" character(20),
-       "timePointYears" character(20),
+       "geographicAreaM49" varchar(20),
+       "measuredElementSuaFbs" varchar(20),
+       "measuredItemParentCPC" varchar(20),
+       "measuredItemChildCPC" varchar(20),
+       "timePointYears" varchar(20),
        "shareUpDown" numeric(21,6)
 );
 
@@ -274,13 +352,13 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create fbs_standardized_wipe table in core schema
 CREATE TABLE core.fbs_standardized_wipe (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "geographicAreaM49" character(20),
-       "measuredElementSuaFbs" character(20),
-       "measuredItemFbsSua" character(20),
-       "timePointYears" character(20),
+       "geographicAreaM49" varchar(20),
+       "measuredElementSuaFbs" varchar(20),
+       "measuredItemFbsSua" varchar(20),
+       "timePointYears" varchar(20),
        "Value" numeric(21,6),
-       "flagObservationStatus" character(20),
-       "flagMethod" character(20)
+       "flagObservationStatus" varchar(20),
+       "flagMethod" varchar(20)
 );
 
 ALTER TABLE core.fbs_standardized_wipe
@@ -297,13 +375,13 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create fbs_balanced_wipe table in core schema
 CREATE TABLE core.fbs_balanced_wipe (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "geographicAreaM49" character(20),
-       "measuredElementSuaFbs" character(20),
-       "measuredItemFbsSua" character(20),
-       "timePointYears" character(20),
+       "geographicAreaM49" varchar(20),
+       "measuredElementSuaFbs" varchar(20),
+       "measuredItemFbsSua" varchar(20),
+       "timePointYears" varchar(20),
        "Value" numeric(21,6),
-       "flagObservationStatus" character(20),
-       "flagMethod" character(20)
+       "flagObservationStatus" varchar(20),
+       "flagMethod" varchar(20)
 );
 
 ALTER TABLE core.fbs_balanced_wipe
@@ -320,8 +398,8 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create parent_nodes table in core schema
 CREATE TABLE core.parent_nodes (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "node" character(20),
-       "level" character(20)
+       "node" varchar(20),
+       "level" varchar(20)
 );
 
 ALTER TABLE core.parent_nodes
@@ -338,11 +416,11 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create food_demand table in core schema
 CREATE TABLE core.food_demand (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CPCCode" character(20),
-       "FBSCode" character(20),
-       "Food_Demand" character(20),
-       "Food_Function" character(20),
-       "Description" character(20),
+       "CPCCode" varchar(20),
+       "FBSCode" varchar(20),
+       "Food_Demand" varchar(20),
+       "Food_Function" varchar(20),
+       "Description" varchar(20),
        "Elasticity" numeric(21,6)
 );
 
@@ -360,8 +438,8 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create food_classification table
 CREATE TABLE food_classification (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CPCCode" character(20),
-       "Type" character(20)
+       "CPCCode" varchar(20),
+       "Type" varchar(20)
 );
 
 ALTER TABLE food_classification
@@ -378,8 +456,8 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create gdp_data table in core schema
 CREATE TABLE core.gdp_data (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "Year" character(20),
-       "CountryM49" character(20),
+       "Year" varchar(20),
+       "CountryM49" varchar(20),
        "GDP_per_capita_usd_const_2015" numeric(21,6)
 );
 
@@ -397,10 +475,10 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create trade_map table in core schema
 CREATE TABLE core.trade_map (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "area" character(20),
-       "flow" character(20),
-       "hs" character(20),
-       "cpc" character(20)
+       "area" varchar(20),
+       "flow" varchar(20),
+       "hs" varchar(20),
+       "cpc" varchar(20)
 );
 
 ALTER TABLE core.trade_map
@@ -417,12 +495,12 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create loss_ratios table
 CREATE TABLE loss_ratios (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CountryM49" character(20),
-       "CPCCode" character(20),
-       "ElementCode" character(20),
-       "Year" character(20),
+       "CountryM49" varchar(20),
+       "CPCCode" varchar(20),
+       "ElementCode" varchar(20),
+       "Year" varchar(20),
        "Value" numeric(21,6),
-       "Flag" character(20)
+       "Flag" varchar(20)
 );
 
 ALTER TABLE loss_ratios
@@ -439,12 +517,12 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create feed_ratios table
 CREATE TABLE feed_ratios (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CountryM49" character(20),
-       "CPCCode" character(20),
-       "ElementCode" character(20),
-       "Year" character(20),
+       "CountryM49" varchar(20),
+       "CPCCode" varchar(20),
+       "ElementCode" varchar(20),
+       "Year" varchar(20),
        "Value" numeric(21,6),
-       "Flag" character(20)
+       "Flag" varchar(20)
 );
 
 ALTER TABLE feed_ratios
@@ -461,12 +539,12 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create seed_rates table
 CREATE TABLE seed_rates (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CountryM49" character(20),
-       "CPCCode" character(20),
-       "ElementCode" character(20),
-       "Year" character(20),
+       "CountryM49" varchar(20),
+       "CPCCode" varchar(20),
+       "ElementCode" varchar(20),
+       "Year" varchar(20),
        "Value" numeric(21,6),
-       "Flag" character(20)
+       "Flag" varchar(20)
 );
 
 ALTER TABLE seed_rates
@@ -483,11 +561,11 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create fish table
 CREATE TABLE fish (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CPCCode" character(20),
-       "ElementCode" character(20),
-       "Year" character(20),
+       "CPCCode" varchar(20),
+       "ElementCode" varchar(20),
+       "Year" varchar(20),
        "Value" numeric(21,6),
-       "Flag" character(20)
+       "Flag" varchar(20)
 );
 
 ALTER TABLE fish
@@ -504,7 +582,7 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create TourismNoIndustrial table in core schema
 CREATE TABLE core.TourismNoIndustrial (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "TourismNoIndustrial" integer(6)
+       "TourismNoIndustrial" integer
 );
 
 ALTER TABLE core.TourismNoIndustrial
@@ -521,7 +599,7 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create flagValidTable in core schema
 CREATE TABLE core.flagValidTable (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "flagObservationStatus" character(20),
+       "flagObservationStatus" varchar(20),
        "Valid" boolean,
        "Protected" boolean
 );
@@ -540,9 +618,9 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create SUA_Commodities table in core schema
 CREATE TABLE core.SUA_Commodities (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "language" character(20),
-       "CPCCode" character(20),
-       "Commodity" character(20)
+       "language" varchar(20),
+       "CPCCode" varchar(20),
+       "Commodity" varchar(500)
 );
 
 ALTER TABLE core.SUA_Commodities
@@ -559,11 +637,11 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create elementMap table in core schema
 CREATE TABLE core.elementMap (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "language" character(20),
-       "code" character(20),
-       "description" character(20),
+       "language" varchar(20),
+       "code" varchar(20),
+       "description" varchar(500),
        "selectionOnly" boolean,
-       "type" character(20)
+       "type" varchar(20)
 );
 
 ALTER TABLE core.elementMap
@@ -580,26 +658,26 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create itemCodeKey table in core schema
 CREATE TABLE core.itemCodeKey (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "itemtype" character(20),
-       "description_en" character(20),
-       "description_es" character(20),
-       "description_fr" character(20),
-       "description_ar" character(20),
-       "areaharvested" character(20),
-       "yield" character(20),
+       "itemtype" varchar(20),
+       "description_en" varchar(20),
+       "description_es" varchar(20),
+       "description_fr" varchar(20),
+       "description_ar" varchar(20),
+       "areaharvested" varchar(20),
+       "yield" varchar(20),
        "factor" numeric(21,6),
-       "production" character(20),
-       "imports" character(20),
-       "exports" character(20),
-       "stock" character(20),
-       "food" character(20),
-       "feed" character(20),
-       "seed" character(20),
-       "loss" character(20),
-       "industrial" character(20),
-       "tourist" character(20),
-       "residual" character(20),
-       "foodmanufacturing" character(20)
+       "production" varchar(20),
+       "imports" varchar(20),
+       "exports" varchar(20),
+       "stock" varchar(20),
+       "food" varchar(20),
+       "feed" varchar(20),
+       "seed" varchar(20),
+       "loss" varchar(20),
+       "industrial" varchar(20),
+       "tourist" varchar(20),
+       "residual" varchar(20),
+       "foodmanufacturing" varchar(20)
 );
 
 ALTER TABLE core.itemCodeKey
@@ -616,11 +694,11 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create output_elements table in core schema
 CREATE TABLE core.output_elements (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "language" character(20),
-       "ElementCode" character(20),
-       "ElementType" character(20),
-       "Unit" character(20),
-       "Name" character(20),
+       "language" varchar(20),
+       "ElementCode" varchar(20),
+       "ElementType" varchar(20),
+       "Unit" varchar(20),
+       "Name" varchar(500),
        "include_fbs" boolean
 );
 
@@ -638,9 +716,9 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create cpc2.1 table in core schema
 CREATE TABLE core."cpc2.1" (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CPCCode" character(20),
-       "Commodity" character(500),
-       "language" character(20)
+       "CPCCode" varchar(20),
+       "Commodity" varchar(500),
+       "language" varchar(20)
 );
 
 ALTER TABLE core."cpc2.1"
@@ -657,9 +735,9 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create elements_all table in core schema
 CREATE TABLE core."elements_all" (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "ElementCode" character(20),
-       "Element" character(500),
-       "language" character(20)
+       "ElementCode" varchar(20),
+       "Element" varchar(500),
+       "language" varchar(20)
 );
 
 ALTER TABLE core."elements_all"
@@ -676,9 +754,9 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create country table in core schema
 CREATE TABLE core."country" (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "CountryM49" character(20),
-       "Country" character(500),
-       "language" character(20)
+       "CountryM49" varchar(20),
+       "Country" varchar(500),
+       "language" varchar(20)
 );
 
 ALTER TABLE core."country"
@@ -695,9 +773,9 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create flags table in core schema
 CREATE TABLE core.flags (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "Flag" character(20),
-       "Source" character(500),
-       "language" character(20)
+       "Flag" varchar(20),
+       "Source" varchar(500),
+       "language" varchar(20)
 );
 
 ALTER TABLE core.flags
@@ -714,9 +792,9 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create fbs_commodities table in core schema
 CREATE TABLE core.fbs_commodities (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "FBSCode" character(20),
-       "Commodity" character(500),
-       "language" character(20)
+       "FBSCode" varchar(20),
+       "Commodity" varchar(500),
+       "language" varchar(20)
 );
 
 ALTER TABLE core.fbs_commodities
@@ -733,12 +811,12 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create nutrient_elements table in core schema
 CREATE TABLE core.nutrient_elements (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "language" character(20),
-       "ElementCode" character(20),
-       "Element" character(500),
-       "Unit" character(100),
-       "measuredElement_code" character(20),
-       "measuredElement" character(500)
+       "language" varchar(20),
+       "ElementCode" varchar(20),
+       "Element" varchar(500),
+       "Unit" varchar(100),
+       "measuredElement_code" varchar(20),
+       "measuredElement" varchar(500)
 );
 
 ALTER TABLE core.nutrient_elements
@@ -755,10 +833,10 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create trade_commodities table in core schema
 CREATE TABLE core.trade_commodities (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "HS6" character(500),
-       "CPCCode" character(20),
-       "Commodity" character(500),
-       "language" character(20)
+       "HS6" varchar(500),
+       "CPCCode" varchar(20),
+       "Commodity" varchar(500),
+       "language" varchar(20)
 );
 
 ALTER TABLE core.trade_commodities
@@ -775,9 +853,9 @@ FOR EACH ROW EXECUTE PROCEDURE versioning(
 -- Create food_function table in core schema
 CREATE TABLE core.food_function (
        "id_key" BIGSERIAL PRIMARY KEY,
-       "food_function" character(20),
-       "description" character(100),
-       "language" character(20)
+       "food_function" varchar(20),
+       "description" varchar(100),
+       "language" varchar(20)
 );
 
 ALTER TABLE core.food_function
@@ -789,4 +867,29 @@ CREATE TRIGGER versioning_trigger_food_function
 BEFORE INSERT OR UPDATE OR DELETE ON core.food_function
 FOR EACH ROW EXECUTE PROCEDURE versioning(
   'sys_period', 'core.food_function_history', true
+);
+
+-- Create production_list_cpc table in core schema
+CREATE TABLE core.production_list_cpc (
+       "id_key" BIGSERIAL PRIMARY KEY,
+       "CPCCode" varchar(20),
+       "Commodity" varchar(500),
+       "Input Code" varchar(20),
+       "Input" varchar(500),
+       "Productivity Code" varchar(20),
+       "Productivity" varchar(500),
+       "Output Code" varchar(20),
+       "Output" varchar(500),
+       "classification" varchar(100)
+);
+
+ALTER TABLE core.production_list_cpc
+  ADD COLUMN "sys_period" tstzrange NOT NULL DEFAULT tstzrange(current_timestamp, null);
+
+CREATE TABLE core.production_list_cpc_history (LIKE core.production_list_cpc);
+
+CREATE TRIGGER versioning_trigger_production_list_cpc
+BEFORE INSERT OR UPDATE OR DELETE ON core.production_list_cpc
+FOR EACH ROW EXECUTE PROCEDURE versioning(
+  'sys_period', 'core.production_list_cpc_history', true
 );
